@@ -2,7 +2,7 @@ group 'com.veriff.veriff_flutter'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.6.10'
+    ext.kotlin_version = '1.8.22' 
     repositories {
         google()
         mavenCentral()
@@ -13,17 +13,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
-
-rootProject.allprojects {
-    repositories {
-        maven { url "https://cdn.veriff.me/android/" } //veriff
-        google()
-        mavenCentral()
-    }
-}
-
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 
 android {
     namespace "com.veriff.veriff_flutter"
@@ -36,6 +25,15 @@ android {
         minSdkVersion 26
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+
+    kotlinOptions {
+        jvmTarget = "21" 
+    }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -44,7 +42,6 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-
         }
     }
 }
@@ -53,10 +50,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.veriff:veriff-library:7.6.0'
 
-    /**
-     * making it devImplementation since this is added only for IDE to resolve flutter deps
-     * update from $flutter_path/bin/cache/artifacts/engine/android-x64 when flutter is upgraded
-     */
     devImplementation files('libs/flutter.jar')
 
     implementation('com.facebook.fresco:fresco:2.6.0') {
