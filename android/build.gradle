@@ -1,22 +1,30 @@
 group 'com.veriff.veriff_flutter'
 version '1.0-SNAPSHOT'
-
-buildscript {
-    ext.kotlin_version = '1.8.22' 
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-
+ 
+ buildscript {
+     ext.kotlin_version = '1.6.10'
+     repositories {
+         google()
+         mavenCentral()
+     }
+ 
+     dependencies {
+         classpath 'com.android.tools.build:gradle:7.0.4'
+         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+     }
+ }
+ 
+ rootProject.allprojects {
+     repositories {
+         maven { url "https://cdn.veriff.me/android/" } //veriff
+         google()
+         mavenCentral()
+     }
+ }
+ 
+ apply plugin: 'com.android.library'
+ apply plugin: 'kotlin-android'
+ 
 android {
     namespace "com.veriff.veriff_flutter"
     compileSdkVersion 33
@@ -48,25 +56,29 @@ android {
         }
     }
 }
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.veriff:veriff-library:7.6.0'
-
-    devImplementation files('libs/flutter.jar')
-
-    implementation('com.facebook.fresco:fresco:2.6.0') {
-        exclude group: 'com.facebook.soloader', module: 'soloader'
-        exclude group: 'com.facebook.fresco', module: 'soloader'
-        exclude group: 'com.facebook.fresco', module: 'nativeimagefilters'
-        exclude group: 'com.facebook.fresco', module: 'nativeimagetranscoder'
-        exclude group: 'com.facebook.fresco', module: 'memory-type-native'
-        exclude group: 'com.facebook.fresco', module: 'imagepipeline-native'
-    }
-
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testImplementation 'com.google.truth:truth:1.0.1'
-    testImplementation "org.mockito:mockito-core:3.7.7"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
-}
+ 
+ dependencies {
+     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+     implementation 'com.veriff:veriff-library:7.6.0'
+ 
+     /**
+      * making it devImplementation since this is added only for IDE to resolve flutter deps
+      * update from $flutter_path/bin/cache/artifacts/engine/android-x64 when flutter is upgraded
+      */
+     devImplementation files('libs/flutter.jar')
+ 
+     implementation('com.facebook.fresco:fresco:2.6.0') {
+         exclude group: 'com.facebook.soloader', module: 'soloader'
+         exclude group: 'com.facebook.fresco', module: 'soloader'
+         exclude group: 'com.facebook.fresco', module: 'nativeimagefilters'
+         exclude group: 'com.facebook.fresco', module: 'nativeimagetranscoder'
+         exclude group: 'com.facebook.fresco', module: 'memory-type-native'
+         exclude group: 'com.facebook.fresco', module: 'imagepipeline-native'
+     }
+ 
+     testImplementation 'junit:junit:4.13.2'
+     testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+     testImplementation 'com.google.truth:truth:1.0.1'
+     testImplementation "org.mockito:mockito-core:3.7.7"
+     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+ }
